@@ -6,17 +6,22 @@ pipeline {
                 docker { image 'maven:3.8.1-adoptopenjdk-11' }
             }
             steps {
-                sh 'mvn --version'
-                // Assuming you want to compile and run HelloWorld.java
-                sh '''
-                    echo "public class HelloWorld {
-                        public static void main(String[] args) {
-                            System.out.println(\\"Hello, World!\\");
-                        }
-                    }" > HelloWorld.java
-                    javac HelloWorld.java
-                    java HelloWorld
-                '''
+                script {
+                    // Print Maven version
+                    sh 'mvn --version'
+
+                    // Create and run HelloWorld.java
+                    sh '''
+                        echo "public class HelloWorld {
+                            public static void main(String[] args) {
+                                System.out.println(\\"Hello, World!\\");
+                            }
+                        }" > HelloWorld.java
+
+                        javac HelloWorld.java
+                        java HelloWorld
+                    '''
+                }
             }
         }
         stage('Front-end') {
@@ -24,7 +29,10 @@ pipeline {
                 docker { image 'node:16-alpine' }
             }
             steps {
-                sh 'node --version'
+                script {
+                    // Print Node.js version
+                    sh 'node --version'
+                }
             }
         }
     }
